@@ -32,8 +32,9 @@ public class BookDaoImpl implements BookDao{
     }
 
     @Override
-    public void save() {
-
+    public void save(Book newBook) {
+        newBook.setId(++BOOKS_COUNT);
+        books.add(newBook);
     }
 
     @Override

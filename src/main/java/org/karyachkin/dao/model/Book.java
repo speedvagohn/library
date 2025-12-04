@@ -20,8 +20,8 @@ public class Book {
         this.readingStatus = readingStatus;
     }
 
-    public Book(String title){
-        this.title = title;
+    public Book(){
+
     }
 
     public int getId() {
