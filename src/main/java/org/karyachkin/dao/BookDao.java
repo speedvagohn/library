@@ -8,7 +8,7 @@ public interface BookDao {
     public List<Book> findAll();
     public Book findById(int id);
     public void save(Book newBook);
-    public void update();
-    public void deleteById();
+    public void update(int id, Book updatedBook);
+    public void deleteById(int id);
     void search();
 }

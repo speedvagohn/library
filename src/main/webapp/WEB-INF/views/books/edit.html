@@ -6,7 +6,8 @@
 </head>
 <body>
 
-<form th:method = "POST" th:action = "@{/}" th:object = "${book}">
+
+<form th:method = "PATCH" th:action = "@{/{id}(id = ${book.getId()})}" th:object = "${book}">
     <label for = "title">Title: </label>
     <input type = "text" th:field = "*{title}" id = "title"/>
     <br/>
@@ -27,7 +28,7 @@
     <input type = "text" th:field = "*{readingStatus}" id = "readingStatus"/>
     <br/>
 
-    <input type="submit" value="Create!"/>
+    <input type="submit" value="Update!"/>
 </form>
 
 </body>

@@ -14,10 +14,10 @@ public class BookDaoImpl implements BookDao{
     {
         books = new ArrayList<>();
 
-        books.add(new Book(++BOOKS_COUNT, "A", "Autor 1", 2020, "genre 1", "Status 1"));
-        books.add(new Book(++BOOKS_COUNT, "B", "Autor 2", 2020, "genre 1", "Status 1"));
-        books.add(new Book(++BOOKS_COUNT, "C", "Autor 3", 2020, "genre 1", "Status 1"));
-        books.add(new Book(++BOOKS_COUNT, "D", "Autor 4", 2020, "genre 1", "Status 1"));
+        books.add(new Book(++BOOKS_COUNT, "A", "Author 1", 2020, "genre 1", "Status 1"));
+        books.add(new Book(++BOOKS_COUNT, "B", "Author 2", 2020, "genre 1", "Status 1"));
+        books.add(new Book(++BOOKS_COUNT, "C", "Author 3", 2020, "genre 1", "Status 1"));
+        books.add(new Book(++BOOKS_COUNT, "D", "Author 4", 2020, "genre 1", "Status 1"));
 
     }
 
@@ -38,13 +38,19 @@ public class BookDaoImpl implements BookDao{
     }
 
     @Override
-    public void update() {
+    public void update(int id, Book updatedBook) {
+        Book bookToBeUpdated = findById(id);
 
+        bookToBeUpdated.setAuthor(updatedBook.getAuthor());
+        bookToBeUpdated.setTitle(updatedBook.getTitle());
+        bookToBeUpdated.setGenre(updatedBook.getGenre());
+        bookToBeUpdated.setPublishYear(updatedBook.getPublishYear());
+        bookToBeUpdated.setReadingStatus(updatedBook.getReadingStatus());
     }
 
     @Override
-    public void deleteById() {
-
+    public void deleteById(int id) {
+        books.removeIf(b -> b.getId() == id);
     }
 
     @Override

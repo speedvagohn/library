@@ -8,10 +8,16 @@
 
 <p th:text = "${book.getId}">Value</p>
 <p th:text = "${book.getTitle}">Value</p>
-<p th:text = "${book.getAutor}">Value</p>
+<p th:text = "${book.getAuthor}">Value</p>
 <p th:text = "${book.getPublishYear}">Value</p>
 <p th:text = "${book.getGenre}">Value</p>
 <p th:text = "${book.getReadingStatus}">Value</p>
+
+<a th:href = "@{{id}/edit(id = ${book.getId()})}">Edit</a>
+
+<form th:method = "DELETE" th:action = "@{/{id}(id = ${book.getId()})}">
+    <input type = submit value = "Delete!"/>
+</form>
 
 </body>
 </html>

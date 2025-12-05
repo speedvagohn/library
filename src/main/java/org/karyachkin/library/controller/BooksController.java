@@ -5,10 +5,7 @@ import org.karyachkin.dao.model.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class BooksController {
@@ -36,6 +33,24 @@ public class BooksController {
     @PostMapping()
     public String create(@ModelAttribute("newBook") Book newBook){
         bookDao.save(newBook);
+        return("redirect:/");
+    }
+
+    @GetMapping("/{id}/edit")
+    public String edit(Model model, @PathVariable("id") int id){
+        model.addAttribute("book", bookDao.findById(id));
+        return("books/edit");
+    }
+
+    @PatchMapping("/{id}")
+    public String update(@ModelAttribute("book") Book updatedBook, @PathVariable("id") int id){
+        bookDao.update(id, updatedBook);
+        return("redirect:/");
+    }
+
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable("id") int id){
+        bookDao.deleteById(id);
         return("redirect:/");
     }
 }

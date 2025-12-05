@@ -6,15 +6,15 @@ import org.springframework.stereotype.Component;
 public class Book {
     private int id;
     private String title;
-    private String autor;
+    private String author;
     private int publishYear;
     private String genre;
     private String readingStatus;
 
-    public Book(int id, String title, String autor, int publishYear, String genre, String readingStatus) {
+    public Book(int id, String title, String author, int publishYear, String genre, String readingStatus) {
         this.id = id;
         this.title = title;
-        this.autor = autor;
+        this.author = author;
         this.publishYear = publishYear;
         this.genre = genre;
         this.readingStatus = readingStatus;
@@ -32,8 +32,8 @@ public class Book {
         return title;
     }
 
-    public String getAutor() {
-        return autor;
+    public String getAuthor() {
+        return author;
     }
 
     public int getPublishYear() {
@@ -56,8 +56,8 @@ public class Book {
         this.title = title;
     }
 
-    public void setAutor(String autor) {
-        this.autor = autor;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public void setPublishYear(int publishYear) {
