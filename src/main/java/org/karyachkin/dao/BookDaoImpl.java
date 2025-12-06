@@ -1,56 +1,56 @@
 package org.karyachkin.dao;
 
 import org.karyachkin.dao.model.Book;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class BookDaoImpl implements BookDao{
-    private List<Book> books;
-    private static int BOOKS_COUNT;
 
-    {
-        books = new ArrayList<>();
+    private final JdbcTemplate jdbcTemplate;
 
-        books.add(new Book(++BOOKS_COUNT, "A", "Author 1", 2020, "genre 1", "Status 1"));
-        books.add(new Book(++BOOKS_COUNT, "B", "Author 2", 2020, "genre 1", "Status 1"));
-        books.add(new Book(++BOOKS_COUNT, "C", "Author 3", 2020, "genre 1", "Status 1"));
-        books.add(new Book(++BOOKS_COUNT, "D", "Author 4", 2020, "genre 1", "Status 1"));
-
+    @Autowired
+    public BookDaoImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
+
 
     @Override
     public List<Book> findAll() {
-            return books;
+        return jdbcTemplate.query("SELECT * FROM books ORDER BY id", new BeanPropertyRowMapper<>(Book.class));
     }
 
     @Override
     public Book findById(int id) {
-        return books.stream().filter(book -> book.getId() == id).findAny().orElse(null);
+        return jdbcTemplate.query("SELECT * FROM books WHERE id = ?", new Object[]{id}, new BeanPropertyRowMapper<>(Book.class))
+                .stream().findAny().orElse(null);
     }
 
     @Override
     public void save(Book newBook) {
-        newBook.setId(++BOOKS_COUNT);
-        books.add(newBook);
+        jdbcTemplate.update("INSERT INTO books VALUES(nextval('books_id_seq'), ?, ?, ?, ?, ?)",
+                newBook.getTitle(), newBook.getAuthor(), newBook.getPublishYear(),
+                newBook.getReadingStatus(), newBook.getGenre());
     }
 
     @Override
     public void update(int id, Book updatedBook) {
-        Book bookToBeUpdated = findById(id);
-
-        bookToBeUpdated.setAuthor(updatedBook.getAuthor());
-        bookToBeUpdated.setTitle(updatedBook.getTitle());
-        bookToBeUpdated.setGenre(updatedBook.getGenre());
-        bookToBeUpdated.setPublishYear(updatedBook.getPublishYear());
-        bookToBeUpdated.setReadingStatus(updatedBook.getReadingStatus());
+        jdbcTemplate.update("UPDATE books SET title = ?, author = ?, publish_year = ?," +
+                " reading_status = ?, genre = ? WHERE id = ?",
+                updatedBook.getTitle(), updatedBook.getAuthor(), updatedBook.getPublishYear(),
+                updatedBook.getReadingStatus(), updatedBook.getGenre(), id);
     }
 
     @Override
     public void deleteById(int id) {
-        books.removeIf(b -> b.getId() == id);
+        jdbcTemplate.update("DELETE FROM books WHERE id = ?", id);
+
     }
 
     @Override

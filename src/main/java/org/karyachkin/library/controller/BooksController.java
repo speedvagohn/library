@@ -22,7 +22,7 @@ public class BooksController {
     }
 
     @GetMapping("/{id}")
-    public String findById(@PathVariable("id") int id, Model model){
+    public String findById(@PathVariable("id") int id, Model model) {
         model.addAttribute("book", bookDao.findById(id));
         return ("books/findById");
     }
@@ -34,7 +34,7 @@ public class BooksController {
     }
 
     @PostMapping()
-    public String create(@ModelAttribute("newBook") @Valid Book newBook, BindingResult bindingResult){
+    public String create(@ModelAttribute("newBook") @Valid Book newBook, BindingResult bindingResult) {
         if (bindingResult.hasErrors()){
             return ("books/newBook");
         }
@@ -44,13 +44,14 @@ public class BooksController {
     }
 
     @GetMapping("/{id}/edit")
-    public String edit(Model model, @PathVariable("id") int id){
+    public String edit(Model model, @PathVariable("id") int id) {
         model.addAttribute("book", bookDao.findById(id));
         return("books/edit");
     }
 
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute("book") @Valid Book updatedBook, BindingResult bindingResult, @PathVariable("id") int id){
+    public String update(@ModelAttribute("book") @Valid Book updatedBook, BindingResult bindingResult,
+                         @PathVariable("id") int id) {
         if (bindingResult.hasErrors()){
             return ("books/edit");
         }
@@ -60,7 +61,7 @@ public class BooksController {
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") int id){
+    public String delete(@PathVariable("id") int id) {
         bookDao.deleteById(id);
         return("redirect:/");
     }
