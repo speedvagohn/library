@@ -17,6 +17,7 @@ import org.thymeleaf.templatemode.TemplateMode; // ← Добавить этот
 
 import javax.sql.DataSource;
 import java.sql.DriverManager;
+import java.util.Properties;
 
 @Configuration
 @ComponentScan("org.karyachkin")
@@ -62,9 +63,14 @@ public class SpringConfig implements WebMvcConfigurer {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
         dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl("jdbc:postgresql://localhost:5432/first_db?useUnicode=true&characterEncoding=UTF-8");
+        dataSource.setUrl("jdbc:postgresql://localhost:5432/first_db?useUnicode=true&characterEncoding=UTF-8&stringtype=unspecified");
         dataSource.setUsername("postgres");
         dataSource.setPassword("postgres");
+
+        Properties props = new Properties();
+        props.setProperty("characterEncoding", "UTF-8");
+        props.setProperty("useUnicode", "true");
+        dataSource.setConnectionProperties(props);
 
         return dataSource;
     }
