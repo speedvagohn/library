@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 public class BooksController {
@@ -16,9 +17,19 @@ public class BooksController {
     public BookDaoImpl bookDao;
 
     @GetMapping("/")
-    public String findAll(Model model){
-        model.addAttribute("books", bookDao.findAll());
-        return("books/starterPage");
+    public String findAll(@RequestParam(value = "search", required = false) String searchTerm,
+                          Model model){
+        List<Book> books;
+
+        if (searchTerm != null && !searchTerm.trim().isEmpty()) {
+            books = bookDao.search(searchTerm.trim());
+            model.addAttribute("searchTerm", searchTerm.trim());
+        } else {
+            books = bookDao.findAll();
+        }
+
+        model.addAttribute("books", books);
+        return "books/starterPage";
     }
 
     @GetMapping("/{id}")

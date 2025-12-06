@@ -11,5 +11,5 @@ public interface BookDao {
     public void save(Book newBook) throws SQLException;
     public void update(int id, Book updatedBook) throws SQLException;
     public void deleteById(int id) throws SQLException;
-    void search();
+    public List<Book> search(String searchTerm);
 }

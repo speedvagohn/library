@@ -2,39 +2,147 @@
 <html lang="en" xmlns:th="https://thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Library</title>
+    <title>Редактирование книги</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            color: #2196F3;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            max-width: 500px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .error {
+            color: #f44336;
+            font-size: 0.9em;
+            margin-top: 5px;
+            padding-left: 5px;
+        }
+
+        .submit-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .submit-button:hover {
+            background-color: #45a049;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+    </style>
 </head>
 <body>
 
+<a th:href="@{/}" class="back-link">← Назад к списку</a>
 
-<form th:method = "PATCH" th:action = "@{/{id}(id = ${book.getId()})}" th:object = "${book}">
-    <label for = "title">Title: </label>
-    <input type = "text" th:field = "*{title}" id = "title"/>
-    <div style = "color:red" th:if = "${#fields.hasErrors('title')}" th:errors="*{title}">Error</div>
-    <br/>
+<h1>✏️ Редактирование книги</h1>
 
-    <label for = "author">Author: </label>
-    <input type = "text" th:field = "*{author}" id = "author"/>
-    <div style = "color:red" th:if = "${#fields.hasErrors('author')}" th:errors="*{author}">Error</div>
-    <br/>
+<form th:method="PATCH" th:action="@{/{id}(id=${book.id})}" th:object="${book}">
 
-    <label for = "publishYear">Publish Year: </label>
-    <input type = "text" th:field = "*{publishYear}" id = "publishYear"/>
-    <div style = "color:red" th:if = "${#fields.hasErrors('publishYear')}" th:errors="*{publishYear}">Error</div>
-    <br/>
+    <div class="form-group">
+        <label for="title">Название:</label>
+        <input type="text" th:field="*{title}" id="title"/>
+        <div class="error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+    </div>
 
-    <label for = "genre">Genre: </label>
-    <input type = "text" th:field = "*{genre}" id = "genre"/>
-    <div style = "color:red" th:if = "${#fields.hasErrors('genre')}" th:errors="*{genre}">Error</div>
-    <br/>
+    <div class="form-group">
+        <label for="author">Автор:</label>
+        <input type="text" th:field="*{author}" id="author"/>
+        <div class="error" th:if="${#fields.hasErrors('author')}" th:errors="*{author}"></div>
+    </div>
 
-    <label for = "readingStatus">Reading Status: </label>
-    <input type = "text" th:field = "*{readingStatus}" id = "readingStatus"/>
-    <div style = "color:red" th:if = "${#fields.hasErrors('readingStatus')}" th:errors="*{readingStatus}">Error</div>
-    <br/>
+    <div class="form-group">
+        <label for="publishYear">Год издания:</label>
+        <input type="number" th:field="*{publishYear}" id="publishYear"/>
+        <div class="error" th:if="${#fields.hasErrors('publishYear')}" th:errors="*{publishYear}"></div>
+    </div>
 
-    <input type="submit" value="Update!"/>
+    <div class="form-group">
+        <label for="genre">Жанр:</label>
+        <input type="text" th:field="*{genre}" id="genre"/>
+        <div class="error" th:if="${#fields.hasErrors('genre')}" th:errors="*{genre}"></div>
+    </div>
+
+    <div class="form-group">
+        <label for="readingStatus">Статус чтения:</label>
+        <select th:field="*{readingStatus}" id="readingStatus">
+            <option value="">Выберите статус</option>
+            <option value="Прочитано">Прочитано</option>
+            <option value="Читаю сейчас">Читаю сейчас</option>
+            <option value="В планах">В планах</option>
+            <option value="Отложено">Отложено</option>
+            <option value="Брошено">Брошено</option>
+        </select>
+        <div class="error" th:if="${#fields.hasErrors('readingStatus')}" th:errors="*{readingStatus}"></div>
+    </div>
+
+    <button type="submit" class="submit-button">💾 Сохранить изменения</button>
 </form>
+
+<script>
+    // Автоматически выбираем текущий статус в выпадающем списке
+    document.addEventListener('DOMContentLoaded', function() {
+        const currentStatus = "[[${book.readingStatus}]]";
+        const statusSelect = document.getElementById('readingStatus');
+
+        if (currentStatus && statusSelect) {
+            for (let i = 0; i < statusSelect.options.length; i++) {
+                if (statusSelect.options[i].value === currentStatus) {
+                    statusSelect.options[i].selected = true;
+                    break;
+                }
+            }
+        }
+    });
+</script>
 
 </body>
 </html>

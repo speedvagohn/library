@@ -54,7 +54,17 @@ public class BookDaoImpl implements BookDao{
     }
 
     @Override
-    public void search() {
+    public List<Book> search(String searchTerm) {
+        // Поиск по title ИЛИ author
+        String sql = "SELECT * FROM books WHERE " +
+                "LOWER(title) LIKE LOWER(?) OR " +
+                "LOWER(author) LIKE LOWER(?) " +
+                "ORDER BY id";
 
+        String searchPattern = "%" + searchTerm + "%";
+
+        return jdbcTemplate.query(sql,
+                new Object[]{searchPattern, searchPattern},
+                new BeanPropertyRowMapper<>(Book.class));
     }
 }
