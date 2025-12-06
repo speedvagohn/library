@@ -10,22 +10,27 @@
 <form th:method = "PATCH" th:action = "@{/{id}(id = ${book.getId()})}" th:object = "${book}">
     <label for = "title">Title: </label>
     <input type = "text" th:field = "*{title}" id = "title"/>
+    <div style = "color:red" th:if = "${#fields.hasErrors('title')}" th:errors="*{title}">Error</div>
     <br/>
 
     <label for = "author">Author: </label>
     <input type = "text" th:field = "*{author}" id = "author"/>
+    <div style = "color:red" th:if = "${#fields.hasErrors('author')}" th:errors="*{author}">Error</div>
     <br/>
 
     <label for = "publishYear">Publish Year: </label>
     <input type = "text" th:field = "*{publishYear}" id = "publishYear"/>
+    <div style = "color:red" th:if = "${#fields.hasErrors('publishYear')}" th:errors="*{publishYear}">Error</div>
     <br/>
 
     <label for = "genre">Genre: </label>
     <input type = "text" th:field = "*{genre}" id = "genre"/>
+    <div style = "color:red" th:if = "${#fields.hasErrors('genre')}" th:errors="*{genre}">Error</div>
     <br/>
 
     <label for = "readingStatus">Reading Status: </label>
     <input type = "text" th:field = "*{readingStatus}" id = "readingStatus"/>
+    <div style = "color:red" th:if = "${#fields.hasErrors('readingStatus')}" th:errors="*{readingStatus}">Error</div>
     <br/>
 
     <input type="submit" value="Update!"/>

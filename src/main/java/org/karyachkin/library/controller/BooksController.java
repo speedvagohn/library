@@ -5,7 +5,10 @@ import org.karyachkin.dao.model.Book;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @Controller
 public class BooksController {
@@ -26,12 +29,16 @@ public class BooksController {
 
     @GetMapping("/newBook")
     public String newBook(Model model){
-        model.addAttribute("book", new Book());
+        model.addAttribute("newBook", new Book());
         return("/books/newBook");
     }
 
     @PostMapping()
-    public String create(@ModelAttribute("newBook") Book newBook){
+    public String create(@ModelAttribute("newBook") @Valid Book newBook, BindingResult bindingResult){
+        if (bindingResult.hasErrors()){
+            return ("books/newBook");
+        }
+
         bookDao.save(newBook);
         return("redirect:/");
     }
@@ -43,7 +50,11 @@ public class BooksController {
     }
 
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute("book") Book updatedBook, @PathVariable("id") int id){
+    public String update(@ModelAttribute("book") @Valid Book updatedBook, BindingResult bindingResult, @PathVariable("id") int id){
+        if (bindingResult.hasErrors()){
+            return ("books/edit");
+        }
+
         bookDao.update(id, updatedBook);
         return("redirect:/");
     }
